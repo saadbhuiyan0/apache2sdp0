@@ -7,17 +7,25 @@ from flask import redirect
 from flask import url_for
 from flask import session
 from flask import flash
-# import flask functions
-from data import db_manager
-# import database functions
+import db_manager
+
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 # set up sessions with random secret key
 
+# os.path.dirname(__file__)
+# will return a string containing the full path to the current python module being loaded.
+# When running a Flask app locally, os.path.dirname(__file__) will return the empty string.
+# When running a Flask app on a deployed web server,  os.path.dirname(__file__) will return the path to the directory where the python module lives (eg. /var/www/myapp/myapp , /var/www/myapp/myapp/utils)
+
+# Note that it does not include a trailing ‘/’, so you will have to add that after. A common solution is to do something like this:
+DIR = os.path.dirname(__file__)
+DIR += "/"
+
 try:
-    f = open("spew.db")
+    f = open(DIR + "spew.db")
 except IOError:
-    db = sqlite3.connect("spew.db") # open if file exists, otherwise create
+    db = sqlite3.connect(DIR + "spew.db") # open if file exists, otherwise create
     c = db.cursor()                 # facilitate db ops
     # create a users table that stores an id, the user's name, and the user's password
     c.execute("CREATE TABLE IF NOT EXISTS users(user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_name TEXT UNIQUE, user_password TEXT);")
@@ -245,5 +253,5 @@ def logout():
 
 
 if __name__ == "__main__":
-    app.debug = False
+    app.debug = True
     app.run()

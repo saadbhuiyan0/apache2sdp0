@@ -2,8 +2,18 @@
 
 
 import sqlite3
+import os
 
-DB_FILE = "spew.db"
+# os.path.dirname(__file__)
+# will return a string containing the full path to the current python module being loaded.
+# When running a Flask app locally, os.path.dirname(__file__) will return the empty string.
+# When running a Flask app on a deployed web server,  os.path.dirname(__file__) will return the path to the directory where the python module lives (eg. /var/www/myapp/myapp , /var/www/myapp/myapp/utils)
+
+# Note that it does not include a trailing ‘/’, so you will have to add that after. A common solution is to do something like this:
+DIR = os.path.dirname(__file__)
+DIR += "/"
+
+DB_FILE = DIR + "spew.db"
 
 
 # add_login takes a username and password and stores it in the users table
